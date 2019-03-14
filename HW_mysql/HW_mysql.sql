@@ -34,12 +34,12 @@ where country in ("Afghanistan", "Bangladesh", "China")
 -- so create a column in the table `actor` named `description` and use the data type `BLOB` 
 -- (Make sure to research the type `BLOB`, as the difference between it and `VARCHAR` are significant).
 
-ALTER TABLE actor
+ALTER TABLE sakila.actor
 add `description` blob NULL AFTER `Last_Update` ;
 ;
 
 --  3b. Very quickly you realize that entering descriptions for each actor is too much effort. Delete the `description` column.
-ALTER TABLE actor
+ALTER TABLE sakila.actor
 drop column `description` ;
 ;
 --  4a. List the last names of actors, as well as how many actors have that last name.
@@ -60,19 +60,19 @@ group by last_name
 select * from sakila.actor 
 where first_name = "GROUCHO" and last_NAme="WILLIAMS";
 
-update actor
+update sakila.actor
 set first_name="HARPO" 
 where first_name = "GROUCHO" and last_NAme="WILLIAMS";
 
 --  4d. Perhaps we were too hasty in changing `GROUCHO` to `HARPO`. 
 #It turns out that `GROUCHO` was the correct name after all! 
 -- In a single query, if the first name of the actor is currently `HARPO`, change it to `GROUCHO`.
-update actor
+update sakila.actor
 set first_name="GROUCHO" 
 where first_name = "HARPO" and last_NAme="WILLIAMS";
 
 --  5a. You cannot locate the schema of the `address` table. Which query would you use to re-create it?
-SHOW CREATE TABLE address;
+SHOW CREATE TABLE sakila.address;
 --   -- Hint: [https://dev.mysql.com/doc/refman/5.7/en/show-create-table.html](https://dev.mysql.com/doc/refman/5.7/en/show-create-table.html)
 
 --  6a. Use `JOIN` to display the first and last names, as well as the address, of each staff member. Use the tables `staff` and `address`:
@@ -119,7 +119,7 @@ and language_id=
 
 -- 7b. Use subqueries to display all actors who appear in the film `Alone Trip`.
 # Method 1
-select first_name,last_name from actor
+select first_name,last_name from sakila.actor
 where actor_id in
 (SELECT actor_id FROM sakila.film_actor
 where film_id= (SELECT film_id FROM sakila.film where title="ALONE TRIP" ) 
@@ -128,7 +128,7 @@ where film_id= (SELECT film_id FROM sakila.film where title="ALONE TRIP" )
 select  first_name, last_name from
 (SELECT actor_id FROM sakila.film_actor
 where film_id= (SELECT film_id FROM sakila.film where title="ALONE TRIP" )) mv
-left join actor
+left join sakila.actor
 on actor.actor_id=mv.actor_id;
 
 -- 7c. You want to run an email marketing campaign in Canada, for which you will need the names and email addresses of all Canadian customers. 
@@ -208,17 +208,64 @@ on sakila.store.address_id=sakila.address.address_id
  ) cntry1
  left join sakila.country
  on cntry1.country_id=sakila.country.country_id;
+ 
 -- 7h. List the top five genres in gross revenue in descending order. 
 -- (**Hint**: you may need to use the following tables: category, film_category, inventory, payment, and rental.)
 
+select category_id, name as genre,sum(amount) as gross_sum
+
+ from
+ (
+SELECT sakila.category.category_id, sakila.category.name,
+	sakila.film_category.film_id
+,sakila.inventory.inventory_id,store_id
+
+,sakila.rental.rental_id,sakila.rental.customer_id,sakila.rental.staff_id
+,sakila.payment.amount
+
+ FROM sakila.category
+join  sakila.film_category using (category_id)
+join sakila.inventory using (film_id)
+join sakila.rental using(inventory_id)
+join sakila.payment using(rental_id)
+
+ ) a1
+ group by category_id
+ order by gross_sum desc
+ limit 0,5;
 
 -- 8a. In your new role as an executive, you would like to have an easy way of viewing the Top five genres by gross revenue. 
 -- Use the solution from the problem above to create a view. If you haven't solved 7h, you can substitute another query to create a view.
-CREATE VIEW `Top_five_genres_by_gross_revenue` AS 
-SELECT * from a ;
+
+CREATE VIEW sakila.Top_five_genres_by_gross_revenue AS 
+
+(
+select category_id, name as genre,sum(amount) as gross_sum
+
+ from
+ (
+SELECT sakila.category.category_id, sakila.category.name,
+	sakila.film_category.film_id
+,sakila.inventory.inventory_id,store_id
+
+,sakila.rental.rental_id,sakila.rental.customer_id,sakila.rental.staff_id
+,sakila.payment.amount
+
+ FROM sakila.category
+join  sakila.film_category using (category_id)
+join sakila.inventory using (film_id)
+join sakila.rental using(inventory_id)
+join sakila.payment using(rental_id)
+
+ ) a1
+ group by category_id
+ order by gross_sum desc
+ limit 0,5
+)
+;
 
 -- 8b. How would you display the view that you created in 8a?
-select * from Top_five_genres_by_gross_revenue;
+select * from sakila.Top_five_genres_by_gross_revenue;
 
 -- 8c. You find that you no longer need the view `top_five_genres`. Write a query to delete it.
-drop view if exists Top_five_genres_by_gross_revenue;
+drop view if exists sakila.Top_five_genres_by_gross_revenue;
