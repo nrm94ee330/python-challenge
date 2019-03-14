@@ -55,14 +55,19 @@ from sakila.actor
 group by last_name
 ) a where count_ln > 1
 ;
---  4c. The actor `HARPO WILLIAMS` was accidentally entered in the `actor` table as `GROUCHO WILLIAMS`. Write a query to fix the record.
-update actors
+--  4c. The actor `HARPO WILLIAMS` was accidentally entered in the `actor` 
+-- table as `GROUCHO WILLIAMS`. Write a query to fix the record.
+select * from sakila.actor 
+where first_name = "GROUCHO" and last_NAme="WILLIAMS";
+
+update actor
 set first_name="HARPO" 
 where first_name = "GROUCHO" and last_NAme="WILLIAMS";
 
---  4d. Perhaps we were too hasty in changing `GROUCHO` to `HARPO`. It turns out that `GROUCHO` was the correct name after all! 
+--  4d. Perhaps we were too hasty in changing `GROUCHO` to `HARPO`. 
+#It turns out that `GROUCHO` was the correct name after all! 
 -- In a single query, if the first name of the actor is currently `HARPO`, change it to `GROUCHO`.
-update actors
+update actor
 set first_name="GROUCHO" 
 where first_name = "HARPO" and last_NAme="WILLIAMS";
 
