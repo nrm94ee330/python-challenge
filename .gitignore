@@ -105,3 +105,4 @@ venv.bak/
 
 #api_keys
 api_keys.py
+config.py
