@@ -1,0 +1,38 @@
+	<div class="row">
+      <div class="col-md-6">
+        <div class="thumbnail">
+          <img src="./Resources/assets/images/Fig1.png" alt="...">
+          <div class="caption">
+            <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="thumbnail">
+          <img src="./Resources/assets/images/Fig2.png" alt="...">
+          <div class="caption">
+            <p><a href="#" class="btn btn-primary" role="button">Button</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="thumbnail">
+          <img src="./Resources/assets/images/Fig3.png" alt="...">
+          <div class="caption">
+            <h3>Thumbnail label</h3>
+            <p>...</p>
+            <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="thumbnail">
+          <img src="./Resources/assets/images/Fig4.png" alt="...">
+          <div class="caption">
+            <h3>Thumbnail label</h3>
+            <p>...</p>
+            <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+          </div>
+        </div>
+      </div>	  
+    </div>
