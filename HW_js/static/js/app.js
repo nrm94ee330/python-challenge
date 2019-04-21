@@ -12,20 +12,27 @@ submit.on("click", function() {
   // Prevent the page from refreshing
   d3.event.preventDefault();
 
+  // clear out the previous filter
   d3.select("tbody").html("");
-  
+
   // Select the input element and get the raw HTML node
   var inputElement = d3.select("#datetime");
   console.log(inputElement)
   // Get the value property of the input element
   var inputValue = inputElement.property("value");
-
   console.log(inputValue);
 
+    // Select the input element and get the raw HTML node
+    var inputElement2 = d3.select("#city");
+    console.log(inputElement2)
+    // Get the value property of the input element
+    var inputValue2 = inputElement2.property("value");
+    //console.log(inputValue2 == "");
+    console.log(inputValue2);
 
+   var filteredData = data.filter(givendata => ((givendata.datetime === inputValue) && ((inputValue2 == "" ? true : givendata.city === inputValue2) ))) ;
+   console.log(filteredData);
 
-  var filteredData = data.filter(givendate => givendate.datetime === inputValue);
-  console.log(filteredData);
 
   filteredData.forEach(function(ufoReport) {
   
