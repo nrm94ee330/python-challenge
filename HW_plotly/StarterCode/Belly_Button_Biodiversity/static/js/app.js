@@ -3,8 +3,35 @@ function buildMetadata(sample) {
   // @TODO: Complete the following function that builds the metadata panel
 
   // Use `d3.json` to fetch the metadata for a sample
-    // Use d3 to select the panel with id of `#sample-metadata`
 
+
+    d3.json("/metadata/" + sample).then(function(response) {
+
+      // console.log(response);
+
+      // Use d3 to select the panel with id of `#sample-metadata`
+      //var selector = d3.select("#sample-metadata");
+      
+
+      var table = d3.select("#sample-metadata");
+      var tbody = table.select("tbody");
+      var trow;
+
+
+      var keys = Object.keys(response);
+
+      console.log(response);
+      console.log(keys.length);
+        tbody.html("") 
+
+        for (var i = 0; i < keys.length; i++) {
+        trow = tbody.append("tr");
+        trow.append("td").text(keys[i]);
+        trow.append("td").text(response[keys[i]]);
+
+        }
+  
+    })
     // Use `.html("") to clear any existing metadata
 
     // Use `Object.entries` to add each key and value pair to the panel
@@ -17,9 +44,44 @@ function buildMetadata(sample) {
 
 function buildCharts(sample) {
 
-  // @TODO: Use `d3.json` to fetch the sample data for the plots
+    // @TODO: Use `d3.json` to fetch the sample data for the plots
+  url="/samples/" + sample;
 
-    // @TODO: Build a Bubble Chart using the sample data
+    d3.json(url).then(function(data) {
+
+      // Grab values from the response json object to build the plots
+      var name = data.otu_ids;
+      var stock = data.sample_values;
+
+  
+      var trace1 = {
+        type: "bubble",
+        mode: "markers",
+        name: name,
+        x: name,
+        y: stock,
+        marker: {
+          size: stock,
+          
+        }
+      };
+  
+      var data = [trace1];
+  
+      var layout = {
+        title: `Sample ${sample}`,
+        yaxis: {
+          autorange: true,
+          type: "linear"
+        },
+         
+      };
+    // @TODO: Build a Bubble Chart using the sample data  
+      Plotly.newPlot("bubble", data, layout);
+  
+    });    
+
+
 
     // @TODO: Build a Pie Chart
     // HINT: You will need to use slice() to grab the top 10 sample_values,
