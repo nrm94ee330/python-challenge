@@ -67,7 +67,7 @@ function createMap(cityMarkers) {
     // layers: [streetmap, cityMarkers]
   });
 
-  console.log(cityMarkers);
+  // console.log(cityMarkers);
 
   // Create a layer control
   // Pass in our baseMaps and overlayMaps

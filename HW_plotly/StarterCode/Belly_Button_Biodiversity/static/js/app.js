@@ -103,6 +103,7 @@ function buildCharts(sample) {
       var data = [{
         values: top_10sample_values,
         labels: top_10otu_ids,
+        hovertext:top_10otu_labels,
         type: "pie"
       }];      
 
