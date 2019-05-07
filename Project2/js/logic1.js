@@ -13,24 +13,22 @@ d3.json(queryUrl, function(data) {
 
 function createFeatures(bikestations) {
 
-  var bikestationMarkers = [];
+
+  var cityMarkers = [];
 
   for (var i = 0; i < bikestations.stations.length; i++) {
-    // loop through the cities array, create a new marker, push it to the bikestationMarkers array
-    bikestationMarkers.push(
-       L.marker([bikestations.stations[i].lat,bikestations.stations[i].lon]).bindPopup("<h1>" + bikestations.stations[i].station_id + "</h1>")
-      //L.marker([bikestations.stations[i].lat,bikestations.stations[i].lon])
+    // loop through the cities array, create a new marker, push it to the cityMarkers array
+    cityMarkers.push(
+      // L.marker([bikestations.stations[i].lat,bikestations.stations[i].lon]).bindPopup("<h1>" + bikestations.stations[i].station_id + "</h1>")
+      L.marker([bikestations.stations[i].lat,bikestations.stations[i].lon])
       );
   }
 
   // Sending our earthquakes layer to the createMap function
-  createMap(bikestationMarkers);
+  createMap(cityMarkers);
 }
 
 function createMap(cityMarkers) {
-
-
-  var cityLayer = L.layerGroup(cityMarkers);
 
   // Define streetmap and darkmap layers
   var streetmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
@@ -56,7 +54,7 @@ function createMap(cityMarkers) {
 
   // Create overlay object to hold our overlay layer
   var overlayMaps = {
-    "Bike Stations": cityLayer
+    Earthquakes: cityMarkers
   };
 
   
@@ -72,8 +70,5 @@ function createMap(cityMarkers) {
   // Create a layer control
   // Pass in our baseMaps and overlayMaps
   // Add the layer control to the map
-// // Add the layer control to the map
-L.control.layers(baseMaps, overlayMaps, {
-  collapsed: true
-}).addTo(myMap);
+  L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 }
