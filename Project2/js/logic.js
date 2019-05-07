@@ -1,6 +1,7 @@
 var newYorkCoords = [40.73, -74.0059];
 var mapZoomLevel = 12;
 
+var statusObj;
 
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json";
@@ -9,17 +10,34 @@ var queryUrl = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json";
 d3.json(queryUrl, function(data) {
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(data.data);
+
 });
+
+
+var  queryStatusUrl  = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json";
+
+d3.json(queryStatusUrl, function(data) {
+  // Once we get a response, send the data.features object to the createFeatures function
+  statusObj = data;
+});
+
 
 function createFeatures(bikestations) {
 
+  console.log(statusObj);
+
+
+  // filter the appropriate station id 
+  
   var bikestationMarkers = [];
 
   for (var i = 0; i < bikestations.stations.length; i++) {
     // loop through the cities array, create a new marker, push it to the bikestationMarkers array
     bikestationMarkers.push(
+      //  L.marker([bikestations.stations[i].lat,bikestations.stations[i].lon]).bindPopup("<h1>" + bikestations.stations[i].station_id + "</h1>")
        L.marker([bikestations.stations[i].lat,bikestations.stations[i].lon]).bindPopup("<h1>" + bikestations.stations[i].station_id + "</h1>")
-      //L.marker([bikestations.stations[i].lat,bikestations.stations[i].lon])
+      
+       //L.marker([bikestations.stations[i].lat,bikestations.stations[i].lon])
       );
   }
 
